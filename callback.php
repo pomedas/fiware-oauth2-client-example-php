@@ -8,21 +8,23 @@
 	$clientSecret = "";
 
 	//access token url
-	$url = 'https://account.lab.fi-ware.org/oauth2/token';
+	$url = 'https://account.lab.fiware.org/oauth2/token';
 	
 	//payload params for the request token
 	$payload = http_build_query(
 		array(
 			'grant_type' => 'authorization_code',
 			'code' => $code,
-			'redirect_uri' => 'http://'. $domain . '/callback.php',
-			'client_id' => $clientId,
-			'client_secret' => $clientSecret
+			'redirect_uri' => 'http://'. $domain . '/callback.php'
 		)
 	);
-
+	
+	//Encodes the autorization 
+	$auth = base64_encode($clientId.':'.$clientSecret); 
+	
 	//extra header for the request
-	$header = array("Content-Type" => "application/x-www-form-urlencoded");
+	$headers = array("Authorization: Basic ".$auth, 
+			 "Content-Type "." application/x-www-form-urlencoded");
   
   	//actual request implementation
 	$ch = curl_init($url);
